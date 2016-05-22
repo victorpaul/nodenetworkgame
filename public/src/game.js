@@ -1,4 +1,4 @@
-var host = "http://192.168.1.57:8080"
+var host = "http://localhost:8080/"
 
 var players = [];
 var socket = io.connect(host);
