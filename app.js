@@ -2,7 +2,15 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
- 
+
+var port = 80;
+process.argv.forEach(function (val, index, array) { // just to read args passed to this file
+    if(index == 2){
+        port = val;
+        console.log("Found argument for port, port set to " + port);
+    }
+});
+
 app.use(express.static(__dirname + '/public'));
  
 app.get('/', function(req, res){
@@ -46,5 +54,5 @@ setInterval(function () {
   tagged = false;
 }, 3000);
  
-server.listen(80);
-console.log("Multiplayer app listening on port 80");
+server.listen(port);
+console.log("App listening on port " + port);
