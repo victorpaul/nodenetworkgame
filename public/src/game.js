@@ -22,7 +22,7 @@ require(objectFiles, function () {
 
   function setUp (stage) {
     socket.on('count', function (data) {
-      UiPlayers.innerHTML = 'Players: ' + data['playerCount'];
+      UiPlayers.innerHTML = 'players: ' + data['playerCount'];
     });
     
     socket.on('connected', function (data) {
