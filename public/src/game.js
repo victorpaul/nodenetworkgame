@@ -45,8 +45,10 @@ require(objectFiles, function () {
         return obj.playerId == data['playerId'];
       })[0];
       if (actor) {
-        actor.player.p.x = data['x'];
-        actor.player.p.y = data['y'];
+        // actor.player.p.x = data['x'];
+        // actor.player.p.y = data['y'];
+        actor.player.p.targetX = data['x'];
+        actor.player.p.targetY = data['y'];
         actor.player.p.sheet = data['sheet'];
         actor.player.p.opacity = data['opacity'];
         actor.player.p.invincible = data['invincible'];
@@ -72,7 +74,6 @@ require(objectFiles, function () {
         }
       }
     });
-
   }
 
   Q.scene('arena', function (stage) {
