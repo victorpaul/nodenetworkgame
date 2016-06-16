@@ -45,6 +45,15 @@ require([], function () {
         }, 3000);
       });
     },
+    updateInterval:1000,
+    lastTimeSynced:0,
+    syncWithServer:function(){
+      // when player moved - update it
+      if(Q.inputs['right'] || Q.inputs['left'] || Q.inputs['up'] || Q.inputs['down'] || (Date.now() - this.lastTimeSynced) > this.updateInterval ) {
+        this.p.socket.emit('update', {playerId: this.p.playerId, x: this.p.x, y: this.p.y, sheet: this.p.sheet});
+        this.lastTimeSynced = Date.now();
+      }
+    },
     step: function (dt) {
       if (Q.inputs['up']) {
         this.p.vy = -200;
@@ -53,9 +62,7 @@ require([], function () {
       } else if (!Q.inputs['down'] && !Q.inputs['up']) {
         this.p.vy = 0;
       }
-
-      this.p.socket.emit('update', { playerId: this.p.playerId, x: this.p.x, y: this.p.y, sheet: this.p.sheet });
-
+      this.syncWithServer();
     }
   });
 

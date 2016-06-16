@@ -35,11 +35,13 @@ io.on('connection', function (socket) {
   }, 1500);
   
   socket.on('disconnect', function () {
+    console.log('disconnect');
     playerCount--;
     io.emit('count', { playerCount: playerCount });
   });
   
   socket.on('update', function (data) {
+    console.log('update');
     if (data['tagged']) {
       tagged = true;
     }
@@ -47,6 +49,7 @@ io.on('connection', function (socket) {
   });
   
   socket.on('tag', function (data) {
+    console.log('tag');
     io.emit('tagged', data);
   });
 });
