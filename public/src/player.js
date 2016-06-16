@@ -32,7 +32,7 @@ require([], function () {
         }, 3000);
       });
     },
-    updateInterval:500,
+    updateInterval:2000,
     lastTimeSynced:0,
     step: function (dt) {
       if (Q.inputs['up']) {
@@ -44,7 +44,12 @@ require([], function () {
       }
 
       if(Q.inputs['right'] || Q.inputs['left'] || Q.inputs['up'] || Q.inputs['down'] || (Date.now() - this.lastTimeSynced) > this.updateInterval ) {
-        this.p.socket.emit('update', {playerId: this.p.playerId, x: this.p.x, y: this.p.y, sheet: this.p.sheet});
+        this.p.socket.emit('update', {
+          playerId: this.p.playerId,
+          x: this.p.x,
+          y: this.p.y,
+          sheet: this.p.sheet
+        });
         this.lastTimeSynced = Date.now();
       }
     }
