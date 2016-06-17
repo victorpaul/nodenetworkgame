@@ -24,12 +24,12 @@ var tagged = false;
  
 io.on('connection', function (socket) {
   playerCount++;
-  id++;
+
   setTimeout(function () {
     if (!tagged) {
-      socket.emit('connected', { playerId: id, tagged: true });
+      socket.emit('connected', {tagged: true });
     } else {
-      socket.emit('connected', { playerId: id });
+      socket.emit('connected', {});
     }
     io.emit('count', { playerCount: playerCount });
   }, 1500);

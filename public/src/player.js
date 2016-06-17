@@ -52,6 +52,10 @@ require([], function () {
         });
         this.lastTimeSynced = Date.now();
       }
+
+      this.p.textAbove.p.label = this.p.name;
+      this.p.textAbove.p.x = this.p.x;
+      this.p.textAbove.p.y = this.p.y + 20;
     }
   });
 
@@ -59,7 +63,7 @@ require([], function () {
     init: function (p) {
       this._super(p, {
         update: true,
-        speed:200,
+        speed:300,
         targetX:null,
         targetY:null
       });
@@ -92,6 +96,10 @@ require([], function () {
           this.p.targetY = null;
         }
       }
+
+      //this.p.textAbove.p.label = this.p.name;
+      this.p.textAbove.p.x = this.p.x;
+      this.p.textAbove.p.y = this.p.y + 20;
     }
   });
   

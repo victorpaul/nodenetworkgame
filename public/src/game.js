@@ -1,10 +1,17 @@
 var host = "http://" + document.location.host;
 
+function guid() {
+  function s4() {return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);}
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
+var selfId = Cookies.get("uuid") ? Cookies.get("uuid") : guid();
+Cookies.set("uuid",selfId);
+
 var players = [];
 var socket = io.connect(host);
 var UiPlayers = document.getElementById("players");
-var selfId, player;
-
+var player;
 
 var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .include('Sprites, Scenes, Input, 2D, Anim, Touch, UI, Audio')
@@ -26,7 +33,7 @@ require(objectFiles, function () {
     });
     
     socket.on('connected', function (data) {
-      selfId = data['playerId'];
+
       if (data['tagged']) {
         player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket });
         player.p.sheet = 'enemy'
@@ -37,7 +44,12 @@ require(objectFiles, function () {
         stage.insert(player);
         player.trigger('join');
       }
+
+      player.p.name = "bob";
+      player.p.textAbove = new Q.UI.Text({label: player.p.name,color: "black",x: 0,y: 0});
+
       stage.add('viewport').follow(player);
+      stage.insert(player.p.textAbove);
     });
 
     socket.on('updated', function (data) {
@@ -57,6 +69,9 @@ require(objectFiles, function () {
       } else {
         var temp = new Q.Actor({ playerId: data['playerId'], x: data['x'], y: data['y'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible'], tagged: data['tagged'] });
         players.push({ player: temp, playerId: data['playerId'] });
+
+        temp.p.textAbove = new Q.UI.Text({label: "bot",color: "black",x: 0,y: 0});
+        stage.insert(temp.p.textAbove);
         stage.insert(temp);
       }
     });
