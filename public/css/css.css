@@ -2,7 +2,7 @@
 
 .players {
 	z-index: 5;
-	position: absolute;
+	position: fixed;
 	padding-top: 10px;
 	padding-right: 10px;
 	right: 0;
@@ -11,6 +11,7 @@
 }
 
 input[name=name]{
+	position: fixed;
 	width:400px;
 	margin:20px;
 	height: 40px;

@@ -1,5 +1,3 @@
-var host = "http://" + document.location.host;
-
 function guid() {
   function s4() {return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);}
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
@@ -10,6 +8,11 @@ function getFromCookie(key,defaultValue){
   Cookies.set(key,value);
   return value;
 }
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 function updatePlayerName(){
   var newName = document.getElementById("myName").value;
   if(newName.length > 10){
@@ -19,8 +22,9 @@ function updatePlayerName(){
   Cookies.set("name",newName);
 }
 
+var names = ["Bob","Shaun","Rudolf","Valera","Petr","Ina","Kate","Eugen","Antuan","Sam","HellFIre","Noob","Jun","Senior","Big boss","Daemon","Paha","Potato","Alina","Max"];
+var host = "http://" + document.location.host;
 var selfId = getFromCookie("uuid",guid());
-
 var players = [];
 var socket = io.connect(host);
 var UiPlayers = document.getElementById("players");
@@ -40,15 +44,14 @@ var objectFiles = [
  
 require(objectFiles, function () {
 
+  document.getElementById("myName").value = getFromCookie("name",names[getRandomInt(0,names.length-1)]);
+
   function setUp (stage) {
     socket.on('count', function (data) {
       UiPlayers.innerHTML = 'PLAYERS: ' + data['playerCount'];
     });
     
     socket.on('connected', function (data) {
-
-      document.getElementById("myName").value = getFromCookie("name","")
-
       if (data['tagged']) {
         player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket });
         player.p.sheet = 'enemy'
