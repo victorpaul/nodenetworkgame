@@ -11,6 +11,7 @@
 }
 
 input[name=name]{
+	z-index: 9999999;
 	position: fixed;
 	width:400px;
 	margin:20px;
