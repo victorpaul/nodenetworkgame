@@ -72,6 +72,7 @@ require([], function () {
       var temp = this;
       setInterval(function () {
         if (!temp.p.update) {
+          temp.p.textAbove.destroy();
           temp.destroy();
         }
         temp.p.update = false;

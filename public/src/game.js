@@ -39,7 +39,7 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
 Q.gravityY = 0;
  
 var objectFiles = [
-  './src/player'
+  './src/player' // TODO 
 ];
  
 require(objectFiles, function () {
@@ -63,7 +63,7 @@ require(objectFiles, function () {
         player.trigger('join');
       }
 
-      updatePlayerName()
+      updatePlayerName();
       player.p.textAbove = new Q.UI.Text({label: player.p.name,color: "black",x: 0,y: 0});
 
       stage.add('viewport').follow(player);
