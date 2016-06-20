@@ -45,6 +45,7 @@ require([], function () {
 
       if(Q.inputs['right'] || Q.inputs['left'] || Q.inputs['up'] || Q.inputs['down'] || (Date.now() - this.lastTimeSynced) > this.updateInterval ) {
         this.p.socket.emit('update', {
+          name: this.p.name,
           playerId: this.p.playerId,
           x: this.p.x,
           y: this.p.y,
@@ -97,7 +98,7 @@ require([], function () {
         }
       }
 
-      //this.p.textAbove.p.label = this.p.name;
+      this.p.textAbove.p.label = this.p.name;
       this.p.textAbove.p.x = this.p.x;
       this.p.textAbove.p.y = this.p.y + 20;
     }

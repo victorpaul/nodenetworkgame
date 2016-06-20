@@ -5,8 +5,21 @@ function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
-var selfId = Cookies.get("uuid") ? Cookies.get("uuid") : guid();
-Cookies.set("uuid",selfId);
+function getFromCookie(key,defaultValue){
+  var value =  Cookies.get(key) ? Cookies.get(key) : defaultValue;
+  Cookies.set(key,value);
+  return value;
+}
+function updatePlayerName(){
+  var newName = document.getElementById("myName").value;
+  if(newName.length > 10){
+    newName =  newName.substr(0,10);
+  }
+  player.p.name =  newName;
+  Cookies.set("name",newName);
+}
+
+var selfId = getFromCookie("uuid",guid());
 
 var players = [];
 var socket = io.connect(host);
@@ -34,6 +47,8 @@ require(objectFiles, function () {
     
     socket.on('connected', function (data) {
 
+      document.getElementById("myName").value = getFromCookie("name","")
+
       if (data['tagged']) {
         player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket });
         player.p.sheet = 'enemy'
@@ -45,7 +60,7 @@ require(objectFiles, function () {
         player.trigger('join');
       }
 
-      player.p.name = "bob";
+      updatePlayerName()
       player.p.textAbove = new Q.UI.Text({label: player.p.name,color: "black",x: 0,y: 0});
 
       stage.add('viewport').follow(player);
@@ -57,8 +72,7 @@ require(objectFiles, function () {
         return obj.playerId == data['playerId'];
       })[0];
       if (actor) {
-        // actor.player.p.x = data['x'];
-        // actor.player.p.y = data['y'];
+        actor.player.p.name = data['name'];
         actor.player.p.targetX = data['x'];
         actor.player.p.targetY = data['y'];
         actor.player.p.sheet = data['sheet'];
@@ -67,7 +81,16 @@ require(objectFiles, function () {
         actor.player.p.tagged = data['tagged'];
         actor.player.p.update = true;
       } else {
-        var temp = new Q.Actor({ playerId: data['playerId'], x: data['x'], y: data['y'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible'], tagged: data['tagged'] });
+        var temp = new Q.Actor({
+          playerId: data['playerId'],
+          name: data['name'],
+          x: data['x'],
+          y: data['y'],
+          sheet: data['sheet'],
+          opacity: data['opacity'],
+          invincible: data['invincible'],
+          tagged: data['tagged']
+        });
         players.push({ player: temp, playerId: data['playerId'] });
 
         temp.p.textAbove = new Q.UI.Text({label: "bot",color: "black",x: 0,y: 0});

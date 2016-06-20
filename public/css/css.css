@@ -9,3 +9,12 @@
 	text-align: right;
 	font-size: 1.5em;
 }
+
+input[name=name]{
+	width:400px;
+	margin:20px;
+	height: 40px;
+	line-height:40px;
+	font-size: 36px;
+	text-align: center;
+}
