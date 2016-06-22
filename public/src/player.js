@@ -35,15 +35,15 @@ require([], function () {
     updateInterval:2000,
     lastTimeSynced:0,
     step: function (dt) {
-      if (Q.inputs['up']) {
-        this.p.vy = -this.p.speed;
-      } else if (Q.inputs['down']) {
-        this.p.vy = this.p.speed;
-      } else if (!Q.inputs['down'] && !Q.inputs['up']) {
-        this.p.vy = 0;
-      }
+      // if (Q.inputs['up']) {
+      //   this.p.vy = -this.p.speed;
+      // } else if (Q.inputs['down']) {
+      //   this.p.vy = this.p.speed;
+      // } else if (!Q.inputs['down'] && !Q.inputs['up']) {
+      //   this.p.vy = 0;
+      // }
 
-      if(Q.inputs['right'] || Q.inputs['left'] || Q.inputs['up'] || Q.inputs['down'] || (Date.now() - this.lastTimeSynced) > this.updateInterval ) {
+      if(this.p.vy !=0 || this.p.vx != 0 || (Date.now() - this.lastTimeSynced) > this.updateInterval ) {
         this.p.socket.emit('update', {
           name: this.p.name,
           playerId: this.p.playerId,

@@ -36,7 +36,7 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
  
-Q.gravityY = 0;
+Q.gravityY = 700;
  
 var objectFiles = [
   './src/player' // TODO 
