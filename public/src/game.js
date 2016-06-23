@@ -22,13 +22,18 @@ function updatePlayerName(){
   Cookies.set("name",newName);
 }
 
+var UiPlayers = document.getElementById("players");
+
 var names = ["Bob","Shaun","Rudolf","Valera","Petr","Ina","Kate","Eugen","Antuan","Sam","HellFIre","Noob","Jun","Senior","Big boss","Daemon","Paha","Potato","Alina","Max"];
 var host = "http://" + document.location.host;
 var selfId = getFromCookie("uuid",guid());
 var players = [];
-var socket = io.connect(host);
-var UiPlayers = document.getElementById("players");
 var player;
+var socket = io.connect(host);
+
+var mapInfo = {
+  h:30,w:50,tw:32,th:32
+};
 
 var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .include('Sprites, Scenes, Input, 2D, Anim, Touch, UI, Audio')
@@ -52,13 +57,16 @@ require(objectFiles, function () {
     });
     
     socket.on('connected', function (data) {
+      var randomX = getRandomInt(mapInfo.tw,mapInfo.w * mapInfo.tw - mapInfo.tw);
+      var randomY = getRandomInt(mapInfo.th,mapInfo.h * mapInfo.th - mapInfo.th)
+
       if (data['tagged']) {
-        player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket });
+        player = new Q.Player({ playerId: selfId, x: randomX, y: randomY, socket: socket });
         player.p.sheet = 'enemy'
         player.p.tagged = true;
         stage.insert(player);
       } else {
-        player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket });
+        player = new Q.Player({ playerId: selfId, x: randomX, y: randomY, socket: socket });
         stage.insert(player);
         player.trigger('join');
       }
